@@ -156,7 +156,7 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
 .atx-card{background:#fff;border:1px solid var(--atx-border);border-radius:var(--atx-r);box-shadow:var(--atx-shadow);padding:32px}
 .atx-step-card{position:relative;z-index:2;margin-top:-96px}
 .atx-step-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px}
-.atx-step-num{flex-shrink:0;width:34px;height:34px;border-radius:10px;background:var(--atx-red);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;display:grid;place-items:center;box-shadow:0 4px 12px rgba(237,28,36,.3)}
+.atx-step-num{flex-shrink:0;width:34px;height:34px;border-radius:10px;background:var(--atx-red);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;line-height:1;display:grid;place-items:center;box-shadow:0 2px 6px rgba(237,28,36,.22)}
 .atx-step-head h2{font-size:19px;font-weight:800;color:var(--atx-navy);margin:0 0 3px;line-height:1.2}
 .atx-step-head p{font-size:13.5px;color:var(--atx-muted);margin:0;line-height:1.45}
 
@@ -194,9 +194,9 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
 .atx-netto-cap{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px}
 .netto-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(38px,5.5vw,58px);font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
 .atx-netto-sub{font-size:13px;color:rgba(255,255,255,.7);margin-top:10px}
-.nb-right{position:relative;display:flex;flex-direction:column;gap:12px;border-left:1px solid rgba(255,255,255,.15);padding-left:24px}
-.nb-stat{display:flex;flex-direction:column;gap:2px}
-.nb-stat span{font-size:11.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.nb-right{position:relative;display:flex;gap:12px}
+.nb-stat{display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;min-width:130px}
+.nb-stat span{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.55)}
 .nb-stat b{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;font-family:'Plus Jakarta Sans',sans-serif}
 .nb-stat b.g{color:#4ade9b}
 #resBruttoLabel{display:none}
@@ -220,7 +220,7 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 @starting-style{.bundesland-wrap.visible{opacity:0;transform:translateY(-6px)}}
 .form-hint{font-size:11.5px;color:var(--atx-muted);margin-top:5px}
 .tip-wrap{position:relative;display:inline-flex}
-.tip-icon{width:15px;height:15px;border-radius:50%;background:var(--atx-soft);color:var(--atx-navy);font-size:10px;font-weight:700;display:grid;place-items:center;cursor:help}
+.tip-icon{width:17px;height:17px;border-radius:50%;background:var(--atx-soft);color:var(--atx-navy);font-size:11px;font-weight:700;line-height:17px;text-align:center;display:inline-block;cursor:help;flex-shrink:0}
 .tip-text{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--atx-navy);color:#fff;font-size:11.5px;font-weight:400;line-height:1.4;padding:9px 12px;border-radius:9px;width:230px;opacity:0;visibility:hidden;transition:opacity .2s;z-index:5}
 .tip-wrap:hover .tip-text{opacity:1;visibility:visible}
 
@@ -1171,9 +1171,10 @@ e-mail: olsztyn@all-tax.pl</p></div>
     document.getElementById('barNetto').style.width = pctNetto + '%';
     document.getElementById('barSozial').style.width = pctSozial + '%';
     document.getElementById('barSteuer').style.width = pctSteuer + '%';
-    document.getElementById('legNetto').textContent = Math.round(pctNetto) + '%';
-    document.getElementById('legSozial').textContent = Math.round(pctSozial) + '%';
-    document.getElementById('legSteuer').textContent = Math.round(pctSteuer) + '%';
+    var _rSoz = Math.round(pctSozial), _rSt = Math.round(pctSteuer);
+    document.getElementById('legNetto').textContent = (bruttoM > 0 ? Math.max(0, 100 - _rSoz - _rSt) : 0) + '%';
+    document.getElementById('legSozial').textContent = _rSoz + '%';
+    document.getElementById('legSteuer').textContent = _rSt + '%';
 
     // Scroll to results on mobile
     if (scrollToResult && window.innerWidth <= 900) {
