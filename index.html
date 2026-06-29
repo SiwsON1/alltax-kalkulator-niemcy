@@ -135,7 +135,7 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
   --atx-text:#3A3A4C; --atx-muted:#6b7280; --atx-border:#e7e7ef;
   --atx-bg:#f4f5fa; --atx-green:#0f9d6b; --atx-soft:#eef0fb;
   --atx-shadow:0 18px 50px -20px rgba(38,34,97,.35);
-  --atx-r:18px; --atx-r-sm:12px;
+  --atx-r:16px; --atx-r-sm:12px;
 }
 .atx{font-family:'Inter',system-ui,sans-serif;color:var(--atx-text);background:var(--atx-bg);padding-bottom:4px}
 .atx *,.atx *::before,.atx *::after{box-sizing:border-box}
@@ -215,8 +215,9 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 .atx-toggle input:checked+.sl{background:var(--atx-red)}
 .atx-toggle input:checked+.sl::after{transform:translateX(19px)}
 .atx-toggle .tt{font-size:13px;font-weight:600;color:var(--atx-text)}
-.bundesland-wrap{display:none;grid-column:1/-1;margin-top:2px}
-.bundesland-wrap.visible{display:block}
+.bundesland-wrap{display:none;grid-column:1/-1;margin-top:2px;opacity:0;transform:translateY(-6px);transition:opacity .25s ease-out,transform .25s ease-out,display .25s allow-discrete}
+.bundesland-wrap.visible{display:block;opacity:1;transform:translateY(0)}
+@starting-style{.bundesland-wrap.visible{opacity:0;transform:translateY(-6px)}}
 .form-hint{font-size:11.5px;color:var(--atx-muted);margin-top:5px}
 .tip-wrap{position:relative;display:inline-flex}
 .tip-icon{width:15px;height:15px;border-radius:50%;background:var(--atx-soft);color:var(--atx-navy);font-size:10px;font-weight:700;display:grid;place-items:center;cursor:help}
@@ -275,7 +276,8 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 .atx-cta h2{font-size:clamp(22px,3vw,30px);font-weight:800;color:#fff;margin:0 0 10px;position:relative}
 .atx-cta p{color:rgba(255,255,255,.8);max-width:560px;margin:0 auto 24px;font-size:15px;position:relative}
 .atx-cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
-.atx-btn{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:11px;font-size:15px;font-weight:700;text-decoration:none;transition:transform .18s cubic-bezier(.23,1,.32,1),box-shadow .18s}
+.atx-btn{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:11px;font-size:15px;font-weight:700;text-decoration:none;transition:transform .15s cubic-bezier(.23,1,.32,1),box-shadow .15s}
+.atx-btn:focus-visible,.atx-pills label:focus-within,.form-select:focus-visible,.form-input:focus-visible{outline:3px solid rgba(237,28,36,.45);outline-offset:2px}
 .atx-btn-red{background:var(--atx-red);color:#fff;box-shadow:0 6px 20px rgba(237,28,36,.4)}
 .atx-btn-red:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(237,28,36,.5)}
 .atx-btn-red:active{transform:scale(.98)}
@@ -287,7 +289,7 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 @keyframes atxUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .atx-step-card,.atx-netto-banner,.atx-tiles,.atx-bar-card{animation:atxUp .6s cubic-bezier(.23,1,.32,1) both}
 .atx-netto-banner{animation-delay:.06s}.atx-tiles{animation-delay:.12s}.atx-bar-card{animation-delay:.18s}
-@media(prefers-reduced-motion:reduce){.atx-step-card,.atx-netto-banner,.atx-tiles,.atx-bar-card,.atx-bar .seg{animation:none;transition:none}}
+@media(prefers-reduced-motion:reduce){.atx-step-card,.atx-netto-banner,.atx-tiles,.atx-bar-card,.atx-bar .seg,.bundesland-wrap{animation:none;transition:none}.bundesland-wrap{opacity:1;transform:none}}
 
 /* RESPONSIVE */
 @media(max-width:900px){
@@ -1187,7 +1189,7 @@ e-mail: olsztyn@all-tax.pl</p></div>
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
       el.textContent = fmt(target) + ' EUR'; _nettoPrev = target; return;
     }
-    var start = _nettoPrev, t0 = null, dur = 480;
+    var start = _nettoPrev, t0 = null, dur = 360;
     function step(ts){
       if (!t0) t0 = ts;
       var p = Math.min(1, (ts - t0) / dur);
