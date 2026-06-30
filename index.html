@@ -201,9 +201,8 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
 .nb-stat b.g{color:#4ade9b}
 #resBruttoLabel{display:none}
 .atx-opt label.lab,.atx-opt span.lab{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--atx-navy);margin-bottom:9px}
-.form-select,.form-input{width:100%;height:52px;padding:0 16px;border:1.5px solid #cfd0db;border-radius:11px;font-family:'Inter',sans-serif;font-size:16px;font-weight:500;color:var(--atx-navy);background:#fff;outline:0;transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none}
-select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23262261' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center;padding-right:42px}
-.form-input{height:52px;padding:0 16px}
+.atx .form-select,.atx .form-input{width:100%;height:52px;padding:0 16px !important;border:1.5px solid #cfd0db;border-radius:11px;font-family:'Inter',sans-serif;font-size:16px;font-weight:500;color:var(--atx-navy);background:#fff;outline:0;transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none;line-height:normal;margin:0}
+.atx select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23262261' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center;padding-right:42px !important}
 .form-select:hover,.form-input:hover{border-color:#a9aac0}
 .form-select:focus,.form-input:focus{border-color:var(--atx-red);box-shadow:0 0 0 3px rgba(237,28,36,.14)}
 .atx-check{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;font-size:13px;font-weight:500;color:var(--atx-text);padding-top:4px}
@@ -216,6 +215,9 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 .atx-toggle input:checked+.sl::after{transform:translateX(19px)}
 .atx-toggle .tt{font-size:13px;font-weight:600;color:var(--atx-text)}
 .form-hint{font-size:11.5px;color:var(--atx-muted);margin-top:5px}
+.atx-subfield{margin-top:14px;animation:atxUp .35s cubic-bezier(.23,1,.32,1)}
+.lab-sm{display:block;font-size:12.5px;font-weight:600;color:var(--atx-muted);margin-bottom:7px}
+.atx [hidden]{display:none !important}
 .tip-wrap{position:relative;display:inline-flex}
 .tip-icon{width:17px;height:17px;border-radius:50%;background:var(--atx-soft);color:var(--atx-navy);font-size:11px;font-weight:700;line-height:17px;text-align:center;display:inline-block;cursor:help;flex-shrink:0}
 .tip-text{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--atx-navy);color:#fff;font-size:11.5px;font-weight:400;line-height:1.4;padding:9px 12px;border-radius:9px;width:230px;opacity:0;visibility:hidden;transition:opacity .2s;z-index:5}
@@ -600,13 +602,17 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
         </select>
       </div>
       <div class="atx-opt">
-        <label class="lab" for="kinder">Dzieci poni&#380;ej 25 lat
+        <span class="lab">Dzieci
           <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Liczba dzieci wp&#322;ywa na stawk&#281; ubezpieczenia piel&#281;gnacyjnego (Pflegeversicherung). Liczone s&#261; dzieci do 25. roku &#380;ycia.</span></span>
-        </label>
-        <select class="form-select" id="kinder">
-          <option value="0">0</option><option value="1">1</option><option value="2">2</option>
-          <option value="3">3</option><option value="4">4</option><option value="5">5 lub wi&#281;cej</option>
-        </select>
+        </span>
+        <label class="atx-check"><input type="checkbox" id="hasKids"> Mam dzieci do 25 lat</label>
+        <div class="atx-subfield" id="kidsCountWrap" hidden>
+          <label class="lab-sm" for="kinder">Liczba dzieci</label>
+          <select class="form-select" id="kinder">
+            <option value="0" hidden>0</option><option value="1">1</option><option value="2">2</option>
+            <option value="3">3</option><option value="4">4</option><option value="5">5 lub wi&#281;cej</option>
+          </select>
+        </div>
       </div>
       <div class="atx-opt">
         <label class="lab">Sk&#322;adka zdrowotna - dodatkowa (%)
@@ -614,7 +620,7 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
         </label>
         <input class="form-input" type="text" id="zusatzbeitrag" value="2,9" inputmode="decimal" autocomplete="off">
       </div>
-      <div class="atx-opt">
+      <div class="atx-opt" id="ageWrap">
         <span class="lab">Wiek</span>
         <label class="atx-check"><input type="checkbox" id="age23" checked> Mam powy&#380;ej 23 lat</label>
         <div class="form-hint">Osoby bezdzietne 23+ p&#322;ac&#261; wy&#380;sz&#261; sk&#322;adk&#281; PV (+0,6%).</div>
@@ -1252,6 +1258,22 @@ e-mail: olsztyn@all-tax.pl</p></div>
     mirror('resBrutto','resBruttoTile');
     mirror('legNetto','legNetto2');
     mirror('legNetto','legNetto3');
+    // Progressive disclosure: dzieci -> liczba; wiek 23+ tylko dla bezdzietnych
+    var hasKids=document.getElementById('hasKids'), kidsWrap=document.getElementById('kidsCountWrap'),
+        kinder=document.getElementById('kinder'), ageWrap=document.getElementById('ageWrap');
+    function syncKids(){
+      if(hasKids.checked){
+        kidsWrap.hidden=false;
+        if(kinder.value==='0') kinder.value='1';
+        ageWrap.style.display='none';
+      } else {
+        kidsWrap.hidden=true;
+        kinder.value='0';
+        ageWrap.style.display='';
+      }
+      if(window.calculate) window.calculate(false);
+    }
+    if(hasKids){ hasKids.addEventListener('change', syncKids); syncKids(); }
     // Domyslny Zusatzbeitrag zalezny od roku (2,5% 2025 / 2,9% 2026), o ile uzytkownik nie nadpisal
     var zb = document.getElementById('zusatzbeitrag');
     var defaults = {'2025':'2,5','2026':'2,9'};
