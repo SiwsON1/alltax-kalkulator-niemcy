@@ -215,9 +215,6 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 .atx-toggle input:checked+.sl{background:var(--atx-red)}
 .atx-toggle input:checked+.sl::after{transform:translateX(19px)}
 .atx-toggle .tt{font-size:13px;font-weight:600;color:var(--atx-text)}
-.bundesland-wrap{display:none;grid-column:1/-1;margin-top:2px;opacity:0;transform:translateY(-6px);transition:opacity .25s ease-out,transform .25s ease-out,display .25s allow-discrete}
-.bundesland-wrap.visible{display:block;opacity:1;transform:translateY(0)}
-@starting-style{.bundesland-wrap.visible{opacity:0;transform:translateY(-6px)}}
 .form-hint{font-size:11.5px;color:var(--atx-muted);margin-top:5px}
 .tip-wrap{position:relative;display:inline-flex}
 .tip-icon{width:17px;height:17px;border-radius:50%;background:var(--atx-soft);color:var(--atx-navy);font-size:11px;font-weight:700;line-height:17px;text-align:center;display:inline-block;cursor:help;flex-shrink:0}
@@ -289,7 +286,7 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 @keyframes atxUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .atx-step-card,.atx-netto-banner,.atx-tiles,.atx-bar-card{animation:atxUp .6s cubic-bezier(.23,1,.32,1) both}
 .atx-netto-banner{animation-delay:.06s}.atx-tiles{animation-delay:.12s}.atx-bar-card{animation-delay:.18s}
-@media(prefers-reduced-motion:reduce){.atx-step-card,.atx-netto-banner,.atx-tiles,.atx-bar-card,.atx-bar .seg,.bundesland-wrap{animation:none;transition:none}.bundesland-wrap{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.atx-step-card,.atx-netto-banner,.atx-tiles,.atx-bar-card,.atx-bar .seg{animation:none;transition:none}}
 
 /* RESPONSIVE */
 @media(max-width:900px){
@@ -587,6 +584,21 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
           <option value="VI">VI - druga praca</option>
         </select>
       </div>
+      <div class="atx-opt" id="bundeslandWrap">
+        <label class="lab" for="bundesland">Bundesland (kraj zwi&#261;zkowy)
+          <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Kraj zwi&#261;zkowy wp&#322;ywa na stawk&#281; podatku ko&#347;cielnego (8% w Bayern i Baden-W&uuml;rttemberg, 9% w pozosta&#322;ych) oraz na sk&#322;adk&#281; piel&#281;gnacyjn&#261; w Saksonii (pracownik p&#322;aci tam +0,5 pp).</span></span>
+        </label>
+        <select class="form-select" id="bundesland">
+          <option value="BW">Baden-W&uuml;rttemberg</option><option value="BY">Bayern</option>
+          <option value="BE">Berlin</option><option value="BB">Brandenburg</option>
+          <option value="HB">Bremen</option><option value="HH">Hamburg</option>
+          <option value="HE">Hessen</option><option value="MV">Mecklenburg-Vorpommern</option>
+          <option value="NI">Niedersachsen</option><option value="NW" selected>Nordrhein-Westfalen</option>
+          <option value="RP">Rheinland-Pfalz</option><option value="SL">Saarland</option>
+          <option value="SN">Sachsen (wy&#380;sza sk&#322;adka PV)</option><option value="ST">Sachsen-Anhalt</option>
+          <option value="SH">Schleswig-Holstein</option><option value="TH">Th&uuml;ringen</option>
+        </select>
+      </div>
       <div class="atx-opt">
         <label class="lab" for="kinder">Dzieci poni&#380;ej 25 lat
           <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Liczba dzieci wp&#322;ywa na stawk&#281; ubezpieczenia piel&#281;gnacyjnego (Pflegeversicherung). Liczone s&#261; dzieci do 25. roku &#380;ycia.</span></span>
@@ -609,21 +621,8 @@ select.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
       </div>
       <div class="atx-opt">
         <span class="lab">Podatek ko&#347;cielny</span>
-        <label class="atx-toggle" id="kircheToggle"><input type="checkbox" id="kirchensteuer" onchange="toggleKirche()"><span class="sl"></span><span class="tt">Kirchensteuer</span></label>
-      </div>
-      <div class="atx-opt"></div>
-      <div class="bundesland-wrap" id="bundeslandWrap">
-        <label class="lab" for="bundesland">Bundesland (kraj zwi&#261;zkowy - stawka podatku ko&#347;cielnego)</label>
-        <select class="form-select" id="bundesland" style="max-width:420px">
-          <option value="BW">Baden-W&uuml;rttemberg (8%)</option><option value="BY">Bayern (8%)</option>
-          <option value="BE">Berlin (9%)</option><option value="BB">Brandenburg (9%)</option>
-          <option value="HB">Bremen (9%)</option><option value="HH">Hamburg (9%)</option>
-          <option value="HE">Hessen (9%)</option><option value="MV">Mecklenburg-Vorpommern (9%)</option>
-          <option value="NI">Niedersachsen (9%)</option><option value="NW" selected>Nordrhein-Westfalen (9%)</option>
-          <option value="RP">Rheinland-Pfalz (9%)</option><option value="SL">Saarland (9%)</option>
-          <option value="SN">Sachsen (9%)</option><option value="ST">Sachsen-Anhalt (9%)</option>
-          <option value="SH">Schleswig-Holstein (9%)</option><option value="TH">Th&uuml;ringen (9%)</option>
-        </select>
+        <label class="atx-toggle" id="kircheToggle"><input type="checkbox" id="kirchensteuer"><span class="sl"></span><span class="tt">Kirchensteuer</span></label>
+        <div class="form-hint">8% w Bayern i Baden-W&uuml;rttemberg, 9% w pozosta&#322;ych landach.</div>
       </div>
     </div>
   </div>
@@ -1072,6 +1071,7 @@ e-mail: olsztyn@all-tax.pl</p></div>
     var kvBase = Math.min(bruttoM, p.bbgKV);
     var rvBase = Math.min(bruttoM, p.bbgRV);
     var pv_r = pvRate(kinder, age23);
+    if (bl === 'SN') pv_r += 0.005; // Sachsen: pracownik +0,5pp Pflegeversicherung
 
     var kv = Math.round(kvBase * (0.073 + zb / 200) * 100) / 100;
     var pv = Math.round(kvBase * pv_r * 100) / 100;
