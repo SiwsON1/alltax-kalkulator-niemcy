@@ -696,11 +696,17 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
           <div class="atx-cond-grid">
             <div class="atx-opt">
               <label class="lab" for="pkvBeitrag">Miesi&#281;czna sk&#322;adka PKV (EUR)</label>
-              <input class="form-input" type="text" id="pkvBeitrag" value="300" inputmode="decimal" autocomplete="off">
+              <input class="form-input" type="text" id="pkvBeitrag" value="500" inputmode="decimal" autocomplete="off">
             </div>
             <div class="atx-opt">
-              <label class="lab" for="pkvZuschuss">Dofinansowanie pracodawcy (EUR)</label>
-              <input class="form-input" type="text" id="pkvZuschuss" value="0" inputmode="decimal" autocomplete="off">
+              <span class="lab">Dofinansowanie pracodawcy
+                <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Arbeitgeberzuschuss - pracodawca ustawowo dop&#322;aca po&#322;ow&#281; sk&#322;adki PKV, maksymalnie 508,59 &euro;/mies. (2026) lub 471,32 &euro; (2025). Odznacz, by wpisa&#263; kwot&#281; r&#281;cznie.</span></span>
+              </span>
+              <label class="atx-check"><input type="checkbox" id="pkvEmployer" checked> Pracodawca dop&#322;aca po&#322;ow&#281; (auto)</label>
+              <div class="atx-subfield" id="pkvManualWrap" style="margin-top:12px">
+                <label class="lab-sm" for="pkvZuschuss">Kwota dofinansowania (EUR) - gdy r&#281;cznie</label>
+                <input class="form-input" type="text" id="pkvZuschuss" value="0" inputmode="decimal" autocomplete="off">
+              </div>
             </div>
           </div>
         </div>
@@ -1312,7 +1318,16 @@ e-mail: olsztyn@all-tax.pl</p></div>
 
       if (kvTyp === 'privat') {
         var pkvB = parseNum(document.getElementById('pkvBeitrag').value);
-        var pkvZ = parseNum(document.getElementById('pkvZuschuss').value);
+        // Arbeitgeberzuschuss: pracodawca doplaca 50% skladki do limitu (jak dojczland)
+        var pkvEmp = document.getElementById('pkvEmployer');
+        var maxZuschuss = year >= 2026 ? 508.59 : 471.32;
+        var pkvZ;
+        if (pkvEmp && pkvEmp.checked) {
+          pkvZ = Math.min(pkvB * 0.5, maxZuschuss);
+        } else {
+          var manualZ = document.getElementById('pkvZuschuss');
+          pkvZ = manualZ ? parseNum(manualZ.value) : 0;
+        }
         kv = Math.max(0, Math.round((pkvB - pkvZ) * 100) / 100);
         pv = 0;
       } else {
@@ -1335,7 +1350,9 @@ e-mail: olsztyn@all-tax.pl</p></div>
       var kvRateVP = kvTyp === 'ermaessigt' ? 0.07 : 0.07;
       var tb2kv, tb2pv;
       if (kvTyp === 'privat') {
-        tb2kv = kv * 12;
+        // Mindestvorsorgepauschale: ryczalt 12% brutto rocznie, cap 1900 EUR (kl.III: 3000) - jak dojczland
+        var mindestCap = klasse === 'III' ? 3000 : 1900;
+        tb2kv = Math.min(bruttoY * 0.12, mindestCap);
         tb2pv = 0;
       } else {
         tb2kv = Math.min(bruttoY, p.bbgKV * 12) * (kvRateVP + zb / 200);
@@ -1599,6 +1616,10 @@ e-mail: olsztyn@all-tax.pl</p></div>
       bf.addEventListener('input',function(){ var v=parseFloat((bf.value||'').replace(',','.')); if(!isNaN(v)){ range.value=Math.min(range.max,Math.max(range.min,v)); updateFill(); } });
       updateFill();
     }
+    // PKV: reczne pole dofinansowania tylko gdy checkbox auto odznaczony
+    var pkvEmp=document.getElementById('pkvEmployer'), pkvMan=document.getElementById('pkvManualWrap');
+    function syncPkvEmp(){ if(pkvMan) pkvMan.style.display = (pkvEmp && pkvEmp.checked) ? 'none' : 'block'; }
+    if(pkvEmp){ pkvEmp.addEventListener('change', syncPkvEmp); syncPkvEmp(); }
     // Auto-przeliczenie dla wartosci poczatkowej (silnik pokazuje placeholder dopoki nie zmienisz pola)
     if(window.calculate) window.calculate(false);
     // Domyslny Zusatzbeitrag zalezny od roku (2,5% 2025 / 2,9% 2026), o ile uzytkownik nie nadpisal
