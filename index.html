@@ -183,7 +183,17 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
 .atx-divider{display:flex;align-items:center;gap:16px;margin:32px 0 24px}
 .atx-divider::before,.atx-divider::after{content:"";flex:1;height:1px;background:var(--atx-border)}
 .atx-divider span{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--atx-muted)}
-.atx-opt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.atx-opt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.atx-opt-wide,.atx-full{grid-column:1/-1}
+/* grupy warunkowe (silnik dodaje klase .visible) */
+.atx-cond{grid-column:1/-1;display:none;padding:20px;background:var(--atx-soft);border:1px solid var(--atx-border);border-radius:12px}
+.atx-cond.visible{display:block;animation:atxUp .3s cubic-bezier(.23,1,.32,1)}
+.atx-cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 24px}
+.atx-cond-grid-3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:700px){.atx-cond-grid,.atx-cond-grid-3{grid-template-columns:1fr}}
+#svDEWrap,#svPLWrap{grid-column:1/-1;display:flex;flex-direction:column;gap:24px}
+.atx-a1-info{display:flex;gap:12px;align-items:flex-start;background:var(--atx-soft);border:1px solid var(--atx-border);border-radius:12px;padding:16px 18px;font-size:13.5px;color:var(--atx-text);line-height:1.5}
+.atx-a1-info .a1-ic{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--atx-navy);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center;font-style:normal}
 
 /* WYNIK block */
 .atx-result-block{margin-top:32px}
@@ -576,19 +586,22 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
     <!-- opcje -->
     <div class="atx-opt-grid">
       <div class="atx-opt">
-        <label class="lab" for="klasse">Klasa podatkowa (Steuerklasse)</label>
+        <label class="lab" for="klasse">Klasa podatkowa (Steuerklasse)
+          <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">I - osoby samotne, II - samotni rodzice, III - ma&#322;&#380;e&#324;stwo (wy&#380;szy doch&oacute;d), IV - ma&#322;&#380;e&#324;stwo (r&oacute;wne dochody), IV z Faktor - ma&#322;&#380;e&#324;stwo z indywidualnym wsp&oacute;&#322;czynnikiem, V - ma&#322;&#380;e&#324;stwo (ni&#380;szy doch&oacute;d), VI - druga praca.</span></span>
+        </label>
         <select class="form-select" id="klasse">
           <option value="I">I - osoby samotne</option>
           <option value="II">II - samotni rodzice</option>
           <option value="III">III - ma&#322;&#380;e&#324;stwo (wy&#380;szy zarobek)</option>
           <option value="IV">IV - ma&#322;&#380;e&#324;stwo (r&oacute;wne zarobki)</option>
+          <option value="IV_F">IV z Faktor</option>
           <option value="V">V - ma&#322;&#380;e&#324;stwo (ni&#380;szy zarobek)</option>
           <option value="VI">VI - druga praca</option>
         </select>
       </div>
-      <div class="atx-opt" id="bundeslandWrap">
-        <label class="lab" for="bundesland">Bundesland (kraj zwi&#261;zkowy)
-          <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Kraj zwi&#261;zkowy wp&#322;ywa na stawk&#281; podatku ko&#347;cielnego (8% w Bayern i Baden-W&uuml;rttemberg, 9% w pozosta&#322;ych) oraz na sk&#322;adk&#281; piel&#281;gnacyjn&#261; w Saksonii (pracownik p&#322;aci tam +0,5 pp).</span></span>
+      <div class="atx-opt">
+        <label class="lab" for="bundesland">Miejsce pracy (Bundesland)
+          <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Bundesland wp&#322;ywa na stawk&#281; podatku ko&#347;cielnego (8% lub 9%) oraz na sk&#322;adk&#281; piel&#281;gnacyjn&#261; w Saksonii (pracownik p&#322;aci tam wi&#281;cej).</span></span>
         </label>
         <select class="form-select" id="bundesland">
           <option value="BW">Baden-W&uuml;rttemberg</option><option value="BY">Bayern</option>
@@ -597,38 +610,151 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
           <option value="HE">Hessen</option><option value="MV">Mecklenburg-Vorpommern</option>
           <option value="NI">Niedersachsen</option><option value="NW" selected>Nordrhein-Westfalen</option>
           <option value="RP">Rheinland-Pfalz</option><option value="SL">Saarland</option>
-          <option value="SN">Sachsen (wy&#380;sza sk&#322;adka PV)</option><option value="ST">Sachsen-Anhalt</option>
+          <option value="SN">Sachsen</option><option value="ST">Sachsen-Anhalt</option>
           <option value="SH">Schleswig-Holstein</option><option value="TH">Th&uuml;ringen</option>
         </select>
       </div>
       <div class="atx-opt">
-        <span class="lab">Dzieci
-          <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Liczba dzieci wp&#322;ywa na stawk&#281; ubezpieczenia piel&#281;gnacyjnego (Pflegeversicherung). Liczone s&#261; dzieci do 25. roku &#380;ycia.</span></span>
-        </span>
-        <label class="atx-check"><input type="checkbox" id="hasKids"> Mam dzieci do 25 lat</label>
-        <div class="atx-subfield" id="kidsCountWrap" hidden>
-          <label class="lab-sm" for="kinder">Liczba dzieci</label>
-          <select class="form-select" id="kinder">
-            <option value="0" hidden>0</option><option value="1">1</option><option value="2">2</option>
-            <option value="3">3</option><option value="4">4</option><option value="5">5 lub wi&#281;cej</option>
+        <span class="lab">Podatek ko&#347;cielny</span>
+        <label class="atx-toggle" id="kircheToggle"><input type="checkbox" id="kirchensteuer"><span class="sl"></span><span class="tt">Kirchensteuer</span></label>
+        <div class="form-hint" id="kircheHint" style="display:none">Stawka: 8% w Baden-W&uuml;rttemberg i Bayern, 9% w pozosta&#322;ych landach.</div>
+      </div>
+
+      <!-- Faktor (klasa IV z Faktor) -->
+      <div class="atx-cond" id="faktorWrap">
+        <div class="atx-opt">
+          <label class="lab" for="faktor">Czynnik (Faktor)
+            <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Indywidualny wsp&oacute;&#322;czynnik obliczony przez urz&#261;d skarbowy dla ma&#322;&#380;e&#324;stw w klasie IV. Warto&#347;&#263; mi&#281;dzy 0 a 1, np. 0,957. Znajdziesz go na karcie podatkowej (LSt-Karte).</span></span>
+          </label>
+          <input class="form-input" type="text" id="faktor" value="0,900" inputmode="decimal" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Bezdzietny / dzieci -->
+      <div class="atx-opt atx-opt-wide">
+        <span class="lab">Dzieci</span>
+        <label class="atx-check"><input type="checkbox" id="age23" checked> Jestem bezdzietny/a i mam co najmniej 23 lata</label>
+        <div class="form-hint">Osoby bezdzietne 23+ p&#322;ac&#261; wy&#380;sz&#261; sk&#322;adk&#281; PV (+0,6%). Odznacz, je&#347;li masz dzieci.</div>
+      </div>
+      <div class="atx-cond" id="kinderWrap">
+        <div class="atx-cond-grid">
+          <div class="atx-opt">
+            <label class="lab" for="kinderfreibetrag">Kwota wolna na dzieci (Kinderfreibetrag)
+              <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Wp&#322;ywa na Solidarit&auml;tszuschlag i podatek ko&#347;cielny (nie na sam podatek dochodowy). 0,5 na ka&#380;de dziecko, lub 1,0 je&#347;li oboje rodzice wpisani.</span></span>
+            </label>
+            <select class="form-select" id="kinderfreibetrag">
+              <option value="0" selected>0</option><option value="0.5">0,5</option><option value="1">1,0</option>
+              <option value="1.5">1,5</option><option value="2">2,0</option><option value="2.5">2,5</option>
+              <option value="3">3,0</option><option value="3.5">3,5</option><option value="4">4,0</option>
+              <option value="4.5">4,5</option><option value="5">5,0</option>
+            </select>
+          </div>
+          <div class="atx-opt">
+            <label class="lab" for="kinder">Dzieci poni&#380;ej 25 lat
+              <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Liczba dzieci wp&#322;ywa na stawk&#281; ubezpieczenia piel&#281;gnacyjnego (Pflegeversicherung). Liczone s&#261; dzieci do 25. roku &#380;ycia.</span></span>
+            </label>
+            <select class="form-select" id="kinder">
+              <option value="0" selected>0</option><option value="1">1</option><option value="2">2</option>
+              <option value="3">3</option><option value="4">4</option><option value="5">5 lub wi&#281;cej</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ubezpieczenie spoleczne -->
+      <div class="atx-opt">
+        <label class="lab" for="svSystem">Ubezpieczenie spo&#322;eczne
+          <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Pracownicy delegowani z Polski na druku A1 p&#322;ac&#261; sk&#322;adki ZUS w Polsce zamiast niemieckich. Podatek dochodowy nadal odprowadzany jest w Niemczech.</span></span>
+        </label>
+        <select class="form-select" id="svSystem">
+          <option value="DE">Ubezpieczenie w Niemczech</option>
+          <option value="PL_A1">Ubezpieczenie spo&#322;eczne w Polsce - A1 (delegowanie)</option>
+        </select>
+      </div>
+
+      <!-- svDEWrap: ubezpieczenia niemieckie -->
+      <div id="svDEWrap" class="atx-full">
+        <div class="atx-cond-grid">
+          <div class="atx-opt">
+            <label class="lab" for="kvTyp">Ubezpieczenie zdrowotne
+              <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Normalne (14,6%) - wi&#281;kszo&#347;&#263; pracownik&oacute;w. Dyskontowane (14,0%) - bez zasi&#322;ku chorobowego. Prywatne (PKV) - dla os&oacute;b powy&#380;ej progu lub samozatrudnionych.</span></span>
+            </label>
+            <select class="form-select" id="kvTyp">
+              <option value="normal">Ustawowe - normalne (14,6%)</option>
+              <option value="ermaessigt">Ustawowe - dyskontowane (14,0%)</option>
+              <option value="privat">Prywatne (PKV)</option>
+            </select>
+          </div>
+          <div class="atx-opt kw-field" id="zbField">
+            <label class="lab" for="zusatzbeitrag">Dodatkowa sk&#322;adka zdrowotna (%)
+              <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Zusatzbeitrag zale&#380;y od kasy chorych. &#346;rednia 2,9% (2026), 2,5% (2025). Pracownik p&#322;aci po&#322;ow&#281;.</span></span>
+            </label>
+            <input class="form-input" type="text" id="zusatzbeitrag" value="2,9" inputmode="decimal" autocomplete="off">
+          </div>
+        </div>
+        <div class="atx-cond" id="pkvWrap">
+          <div class="atx-cond-grid">
+            <div class="atx-opt">
+              <label class="lab" for="pkvBeitrag">Miesi&#281;czna sk&#322;adka PKV (EUR)</label>
+              <input class="form-input" type="text" id="pkvBeitrag" value="300" inputmode="decimal" autocomplete="off">
+            </div>
+            <div class="atx-opt">
+              <label class="lab" for="pkvZuschuss">Dofinansowanie pracodawcy (EUR)</label>
+              <input class="form-input" type="text" id="pkvZuschuss" value="0" inputmode="decimal" autocomplete="off">
+            </div>
+          </div>
+        </div>
+        <div class="atx-opt atx-opt-wide">
+          <label class="lab" for="rvTyp">Ubezpieczenie emerytalne (Rentenversicherung)
+            <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Od 2025 jednolity pr&oacute;g BBG dla ca&#322;ych Niemiec. Opcja "brak" dotyczy np. urz&#281;dnik&oacute;w (Beamte).</span></span>
+          </label>
+          <select class="form-select" id="rvTyp">
+            <option value="gesetzlich">Ustawowe (obowi&#261;zkowe)</option>
+            <option value="keine">Brak (np. urz&#281;dnicy / Beamte)</option>
           </select>
         </div>
       </div>
-      <div class="atx-opt">
-        <label class="lab">Sk&#322;adka zdrowotna - dodatkowa (%)
-          <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Zusatzbeitrag - dodatkowa sk&#322;adka kasy chorych. &#346;rednio 2,5% (2025) / 2,9% (2026). Pracownik p&#322;aci po&#322;ow&#281;.</span></span>
-        </label>
-        <input class="form-input" type="text" id="zusatzbeitrag" value="2,9" inputmode="decimal" autocomplete="off">
+
+      <!-- svPLWrap: delegowanie A1 -->
+      <div id="svPLWrap" class="atx-full" style="display:none">
+        <div class="atx-a1-info">
+          <span class="a1-ic">i</span>
+          <span>Pracownik delegowany - sk&#322;adki ZUS odprowadzane w Polsce na podstawie druku A1. Kalkulator oblicza tylko podatek niemiecki. Sk&#322;adk&#281; ZUS mo&#380;esz wpisa&#263; poni&#380;ej (opcjonalnie).</span>
+        </div>
+        <div class="atx-opt atx-opt-wide">
+          <label class="lab" for="zusA1Kwota">Sk&#322;adka ZUS (cz&#281;&#347;&#263; pracownika) odliczana od netto (EUR/mies.) - opcjonalnie
+            <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Je&#347;li nie podasz kwoty, kalkulator poka&#380;e netto po samym podatku niemieckim. Je&#347;li wpiszesz, sk&#322;adka zostanie odj&#281;ta od netto.</span></span>
+          </label>
+          <input class="form-input" type="text" id="zusA1Kwota" value="0" inputmode="decimal" autocomplete="off" placeholder="np. 500">
+        </div>
       </div>
-      <div class="atx-opt" id="ageWrap">
-        <span class="lab">Wiek</span>
-        <label class="atx-check"><input type="checkbox" id="age23" checked> Mam powy&#380;ej 23 lat</label>
-        <div class="form-hint">Osoby bezdzietne 23+ p&#322;ac&#261; wy&#380;sz&#261; sk&#322;adk&#281; PV (+0,6%).</div>
+
+      <!-- Dalsze dochody / LSt-Karte -->
+      <div class="atx-opt atx-opt-wide">
+        <span class="lab">Dalsze dochody / wpisy w LSt-Karte</span>
+        <label class="atx-toggle" id="dalszeToggle"><input type="checkbox" id="dalszeDochody"><span class="sl"></span><span class="tt">Mam dodatkowe wpisy z karty podatkowej</span></label>
       </div>
-      <div class="atx-opt">
-        <span class="lab">Podatek ko&#347;cielny</span>
-        <label class="atx-toggle" id="kircheToggle"><input type="checkbox" id="kirchensteuer"><span class="sl"></span><span class="tt">Kirchensteuer</span></label>
-        <div class="form-hint">8% w Bayern i Baden-W&uuml;rttemberg, 9% w pozosta&#322;ych landach.</div>
+      <div class="atx-cond" id="dalszeDochodyWrap">
+        <div class="atx-cond-grid atx-cond-grid-3">
+          <div class="atx-opt">
+            <label class="lab" for="versorgung">Dochody za wieloletni&#261; dzia&#322;alno&#347;&#263; (EUR)
+              <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Versorgungsbez&uuml;ge - np. emerytury zak&#322;adowe, odprawy. Podlegaj&#261; cz&#281;&#347;ciowemu zwolnieniu (Versorgungsfreibetrag).</span></span>
+            </label>
+            <input class="form-input" type="text" id="versorgung" value="0" inputmode="decimal" autocomplete="off">
+          </div>
+          <div class="atx-opt">
+            <label class="lab" for="freibetrag">Roczna kwota wolna z LSt-Karte (EUR)
+              <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Freibetrag wpisany na karcie podatkowej przez urz&#261;d. Zmniejsza podstaw&#281; opodatkowania (np. koszty dojazdu, opieka nad dzieckiem).</span></span>
+            </label>
+            <input class="form-input" type="text" id="freibetrag" value="0" inputmode="decimal" autocomplete="off">
+          </div>
+          <div class="atx-opt">
+            <label class="lab" for="hinzu">Roczna kwota doliczona z LSt-Karte (EUR)
+              <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-text">Hinzurechnungsbetrag - kwota doliczana do dochodu, np. przy dw&oacute;ch pracodawcach, by unikn&#261;&#263; niedop&#322;aty.</span></span>
+            </label>
+            <input class="form-input" type="text" id="hinzu" value="0" inputmode="decimal" autocomplete="off">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -684,12 +810,12 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
     <summary>Szczeg&oacute;&#322;owe rozbicie potr&#261;ce&#324; <span class="chev">&#9662;</span></summary>
     <div class="atx-det-body">
       <div class="atx-det-grid">
-        <div>
+        <div id="sozialWrap">
           <h4>Sk&#322;adki na ubezpieczenia (Sozialversicherung)</h4>
-          <div class="result-row"><span class="label">Ubezpieczenie zdrowotne (KV)</span><span class="val" id="resKV">-</span></div>
-          <div class="result-row"><span class="label">Ubezpieczenie piel&#281;gnacyjne (PV)</span><span class="val" id="resPV">-</span></div>
-          <div class="result-row"><span class="label">Ubezpieczenie emerytalne (RV)</span><span class="val" id="resRV">-</span></div>
-          <div class="result-row"><span class="label">Ubezpieczenie od bezrobocia (AV)</span><span class="val" id="resAV">-</span></div>
+          <div class="result-row"><span class="label" id="labelKV">Ubezpieczenie zdrowotne (KV)</span><span class="val" id="resKV">-</span></div>
+          <div class="result-row"><span class="label" id="labelPV">Ubezpieczenie piel&#281;gnacyjne (PV)</span><span class="val" id="resPV">-</span></div>
+          <div class="result-row"><span class="label" id="labelRV">Ubezpieczenie emerytalne (RV)</span><span class="val" id="resRV">-</span></div>
+          <div class="result-row"><span class="label" id="labelAV">Ubezpieczenie od bezrobocia (AV)</span><span class="val" id="resAV">-</span></div>
         </div>
         <div>
           <h4>Podatki</h4>
@@ -698,9 +824,11 @@ ul.et_pb_social_media_follow{list-style-type:none!important;margin:0 0 22px;padd
           <div class="result-row" id="resKircheRow"><span class="label">Podatek ko&#347;cielny</span><span class="val" id="resKirche">-</span></div>
         </div>
       </div>
+      <div class="result-row" id="zusA1Row" style="display:none;padding:12px 0 0"><span class="label">Sk&#322;adka ZUS w Polsce (A1, cz&#281;&#347;&#263; pracownika)</span><span class="val" id="resZusA1">-</span></div>
       <div class="atx-det-total"><span>Razem potr&#261;cenia od brutto</span><span class="val" id="resAbzug">-</span></div>
     </div>
   </details>
+  <div id="printOverlay" style="display:none"></div>
 
   </div><!-- /resultContent -->
   </div><!-- /atx-result-block -->
@@ -935,24 +1063,25 @@ e-mail: olsztyn@all-tax.pl</p></div>
 (function() {
   'use strict';
 
-  /* ─── Tax parameters by year ─── */
+  /* Tax parameters by year */
   var P = {
     2025: {
-      gf: 12096,       // Grundfreibetrag
-      z2e: 17443,      // Zone 2 end
-      z3e: 68480,      // Zone 3 end
-      z4e: 277825,     // Zone 4 end
+      gf: 12096,
+      z2e: 17443,
+      z3e: 68480,
+      z4e: 277825,
       z2a: 932.30, z2b: 1400,
       z3a: 176.64, z3b: 2397, z3c: 1015.13,
       z4r: 0.42, z4s: 10911.92,
       z5r: 0.45, z5s: 19246.67,
-      bbgKV: 5512.50,  // monthly
+      bbgKV: 5512.50,
       bbgRV: 8050.00,
-      wk: 1230,        // Werbungskostenpauschale
-      sa: 36,          // Sonderausgaben
-      entl: 4260,      // Entlastungsbetrag (Klasse II)
-      sfg: 19950,      // Soli Freigrenze single
-      sfg3: 39900      // Soli Freigrenze Klasse III
+      wk: 1230,
+      sa: 36,
+      entl: 4260,
+      sfg: 19950,
+      sfg3: 39900,
+      kfb: 9312
     },
     2026: {
       gf: 12348,
@@ -969,11 +1098,12 @@ e-mail: olsztyn@all-tax.pl</p></div>
       sa: 36,
       entl: 4260,
       sfg: 20350,
-      sfg3: 40700
+      sfg3: 40700,
+      kfb: 9600
     }
   };
 
-  /* ─── Grundtarif §32a EStG ─── */
+  /* Grundtarif §32a EStG */
   function grundtarif(zvE, yr) {
     var p = P[yr];
     zvE = Math.floor(Math.max(0, zvE));
@@ -992,17 +1122,62 @@ e-mail: olsztyn@all-tax.pl</p></div>
     return Math.floor(p.z5r * zvE - p.z5s);
   }
 
-  /* ─── PV employee rate by children & age ─── */
-  function pvRate(kinder, age23) {
-    if (kinder === 0 && age23) return 0.024;   // childless 23+
-    if (kinder <= 1) return 0.018;              // 1 child or childless <23
-    if (kinder === 2) return 0.0155;
-    if (kinder === 3) return 0.013;
-    if (kinder === 4) return 0.0105;
-    return 0.008;                                // 5+
+  /* Lohnsteuer fuer Steuerklassen V und VI (§ 39b Abs. 2 Satz 7 EStG)
+     Offizieller PAP BMF 2026 - Methoden MST5_6 + UP5_6 */
+  var W1STKL5 = 14071;
+  var W2STKL5 = 34939;
+  var W3STKL5 = 222260;
+
+  function up5_6(ZX, yr) {
+    var X = Math.floor(ZX * 1.25);
+    var ST1 = grundtarif(X, yr);
+    X = Math.floor(ZX * 0.75);
+    var ST2 = grundtarif(X, yr);
+    var DIFF = (ST1 - ST2) * 2;
+    var MIST = Math.floor(ZX * 0.14);
+    return Math.max(MIST, DIFF);
   }
 
-  /* ─── Format number as "1 234,56" ─── */
+  function mst5_6(zvE, yr) {
+    var ZZX = Math.floor(zvE);
+    var ZX, ST;
+    if (ZZX > W2STKL5) {
+      ZX = W2STKL5;
+      ST = up5_6(ZX, yr);
+      if (ZZX > W3STKL5) {
+        ST = Math.floor(ST + (W3STKL5 - W2STKL5) * 0.42);
+        ST = Math.floor(ST + (ZZX - W3STKL5) * 0.45);
+      } else {
+        ST = Math.floor(ST + (ZZX - W2STKL5) * 0.42);
+      }
+    } else {
+      ZX = ZZX;
+      ST = up5_6(ZX, yr);
+      if (ZZX > W1STKL5) {
+        var VERGL = ST;
+        ZX = W1STKL5;
+        var stW1 = up5_6(ZX, yr);
+        var HOCH = Math.floor(stW1 + (ZZX - W1STKL5) * 0.42);
+        ST = Math.min(HOCH, VERGL);
+      }
+    }
+    return ST;
+  }
+
+  /* PV employee rate by children & age, Sachsen adjustment */
+  function pvRate(kinder, age23, isSachsen) {
+    var base;
+    if (kinder === 0 && age23) base = 0.024;
+    else if (kinder <= 1) base = 0.018;
+    else if (kinder === 2) base = 0.0155;
+    else if (kinder === 3) base = 0.013;
+    else if (kinder === 4) base = 0.0105;
+    else base = 0.008;
+    if (isSachsen) base += 0.005;
+    return base;
+  }
+
+  /* Format number as "1 234,56" */
   function fmt(n) {
     var abs = Math.abs(n);
     var parts = abs.toFixed(2).split('.');
@@ -1010,60 +1185,94 @@ e-mail: olsztyn@all-tax.pl</p></div>
     return (n < 0 ? '-' : '') + int + ',' + parts[1];
   }
 
-  /* ─── Format deduction: "-123,45 EUR" or "0,00 EUR" for zero ─── */
   function fmtDed(n) {
     if (Math.abs(n) < 0.005) return '0,00 EUR';
     return '-' + fmt(n) + ' EUR';
   }
 
-  /* ─── Parse German-format number ─── */
   function parseNum(val) {
     return parseFloat(String(val).replace(/\s/g, '').replace(',', '.')) || 0;
   }
 
-  /* ─── Show/hide Bundesland ─── */
-  window.toggleKirche = function() {
-    var wrap = document.getElementById('bundeslandWrap');
-    var checked = document.getElementById('kirchensteuer').checked;
-    if (checked) {
-      wrap.classList.add('visible');
-    } else {
-      wrap.classList.remove('visible');
-    }
-  };
+  /* Toggle conditional field visibility */
+  function toggleWrap(id, show) {
+    var el = document.getElementById(id);
+    if (show) el.classList.add('visible');
+    else el.classList.remove('visible');
+  }
 
-  /* ─── Toggle FAQ ─── */
+  function updateConditionalFields() {
+    var klasse = document.getElementById('klasse').value;
+    var kvTyp = document.getElementById('kvTyp').value;
+    var kirche = document.getElementById('kirchensteuer').checked;
+    var dalsze = document.getElementById('dalszeDochody').checked;
+    var kinder = parseInt(document.getElementById('kinder').value);
+    var svSystem = document.getElementById('svSystem').value;
+
+    toggleWrap('faktorWrap', klasse === 'IV_F');
+    toggleWrap('dalszeDochodyWrap', dalsze);
+
+    /* Ubezpieczenie społeczne: DE vs PL (A1) */
+    var isA1 = svSystem === 'PL_A1';
+    document.getElementById('svDEWrap').style.display = isA1 ? 'none' : '';
+    document.getElementById('svPLWrap').style.display = isA1 ? '' : 'none';
+
+    if (!isA1) {
+      toggleWrap('pkvWrap', kvTyp === 'privat');
+      var zbField = document.getElementById('zusatzbeitrag').closest('.kw-field');
+      zbField.style.display = kvTyp === 'privat' ? 'none' : '';
+    }
+
+    /* Bezdzietny (age23) checked → ukryj pola dzieci, resetuj wartości */
+    var bezdzietny = document.getElementById('age23').checked;
+    toggleWrap('kinderWrap', !bezdzietny);
+    if (bezdzietny) {
+      document.getElementById('kinder').value = '0';
+      document.getElementById('kinderfreibetrag').value = '0';
+    }
+
+    var kircheHint = document.getElementById('kircheHint');
+    kircheHint.style.display = kirche ? 'block' : 'none';
+  }
+
+  /* Toggle FAQ */
   window.toggleFAQ = function(btn) {
-    var item = btn.closest('.faq-item');
-    var answer = item.querySelector('.faq-a');
+    var item = btn.closest('.kbn-faq-item');
+    var answer = item.querySelector('.kbn-faq-a');
     var isOpen = item.classList.contains('open');
-    // Close all
-    document.querySelectorAll('.faq-item.open').forEach(function(el) {
+    document.querySelectorAll('.kbn-faq-item.open').forEach(function(el) {
       el.classList.remove('open');
-      el.querySelector('.faq-a').style.maxHeight = '0';
+      el.querySelector('.kbn-faq-a').style.maxHeight = '0';
     });
-    // Open clicked if it was closed
     if (!isOpen) {
       item.classList.add('open');
       answer.style.maxHeight = answer.scrollHeight + 'px';
     }
   };
 
-  /* ═══ MAIN CALCULATION ═══ */
+  /* MAIN CALCULATION */
   window.calculate = function(scrollToResult) {
     var brutto = parseNum(document.getElementById('brutto').value);
     var period = document.querySelector('input[name="period"]:checked').value;
     var year = parseInt(document.querySelector('input[name="year"]:checked').value);
-    var klasse = document.getElementById('klasse').value;
+    var klasseRaw = document.getElementById('klasse').value;
+    var klasse = klasseRaw === 'IV_F' ? 'IV' : klasseRaw;
+    var faktor = klasseRaw === 'IV_F' ? Math.min(1, Math.max(0, parseNum(document.getElementById('faktor').value))) : 0;
     var kirche = document.getElementById('kirchensteuer').checked;
     var bl = document.getElementById('bundesland').value;
     var kinder = parseInt(document.getElementById('kinder').value);
+    var kinderFB = parseFloat(document.getElementById('kinderfreibetrag').value);
     var age23 = document.getElementById('age23').checked;
     var zb = parseNum(document.getElementById('zusatzbeitrag').value);
+    var kvTyp = document.getElementById('kvTyp').value;
+    var rvTyp = document.getElementById('rvTyp').value;
+    var isSachsen = bl === 'SN';
+    var freibetragY = parseNum(document.getElementById('freibetrag').value);
+    var hinzuY = parseNum(document.getElementById('hinzu').value);
+    var versorgungM = parseNum(document.getElementById('versorgung').value);
 
     var p = P[year];
 
-    // Monthly brutto
     var bruttoM = period === 'yearly' ? brutto / 12 : brutto;
     var bruttoY = bruttoM * 12;
 
@@ -1073,91 +1282,157 @@ e-mail: olsztyn@all-tax.pl</p></div>
       return;
     }
 
-    /* ─── Social contributions (monthly) ─── */
-    var kvBase = Math.min(bruttoM, p.bbgKV);
-    var rvBase = Math.min(bruttoM, p.bbgRV);
-    var pv_r = pvRate(kinder, age23);
-    if (bl === 'SN') pv_r += 0.005; // Sachsen: pracownik +0,5pp Pflegeversicherung
+    /* Social contributions (monthly) */
+    var svSystem = document.getElementById('svSystem').value;
+    var isA1 = svSystem === 'PL_A1';
 
-    var kv = Math.round(kvBase * (0.073 + zb / 200) * 100) / 100;
-    var pv = Math.round(kvBase * pv_r * 100) / 100;
-    var rv = Math.round(rvBase * 0.093 * 100) / 100;
-    var av = Math.round(rvBase * 0.013 * 100) / 100;
-    var sozialM = Math.round((kv + pv + rv + av) * 100) / 100;
+    var kv, pv, rv, av, sozialM, vp;
 
-    /* ─── Vorsorgepauschale (annual, for tax calculation) ─── */
-    var tb1 = Math.min(bruttoY, p.bbgRV * 12) * 0.093;
-    // ermaessigter KV-Satz = 14.0% → half = 7.0%
-    var tb2kv = Math.min(bruttoY, p.bbgKV * 12) * (0.07 + zb / 200);
-    var tb2pv = Math.min(bruttoY, p.bbgKV * 12) * pv_r;
-    var vp = Math.ceil(tb1 + tb2kv + tb2pv);
+    if (isA1) {
+      /* A1 delegowanie: brak niemieckich składek, ZUS opcjonalnie z inputa */
+      kv = 0; pv = 0; rv = 0; av = 0; sozialM = 0;
 
-    /* ─── zu versteuerndes Einkommen (annual) ─── */
+      /* Vorsorgepauschale A1: emerytalna (niem. formula) + Mindestvorsorgepauschale 2025 / ALV 2026 */
+      var tb1a1 = Math.min(bruttoY, p.bbgRV * 12) * 0.093;
+      var tb2a1;
+      if (year === 2025) {
+        /* Mindestvorsorgepauschale 12% brutto, max 1900 (3000 dla Klasse III) */
+        var mvpMax = klasse === 'III' ? 3000 : 1900;
+        tb2a1 = Math.min(bruttoY * 0.12, mvpMax);
+      } else {
+        /* 2026: brak Mindestvorsorgepauschale, tylko ALV 1,3% */
+        tb2a1 = Math.min(bruttoY, p.bbgRV * 12) * 0.013;
+      }
+      vp = Math.ceil(tb1a1 + tb2a1);
+    } else {
+      /* Niemieckie ubezpieczenia społeczne */
+      var kvBase = Math.min(bruttoM, p.bbgKV);
+      var rvBase = Math.min(bruttoM, p.bbgRV);
+      var pv_r = pvRate(kinder, age23, isSachsen);
+
+      if (kvTyp === 'privat') {
+        var pkvB = parseNum(document.getElementById('pkvBeitrag').value);
+        var pkvZ = parseNum(document.getElementById('pkvZuschuss').value);
+        kv = Math.max(0, Math.round((pkvB - pkvZ) * 100) / 100);
+        pv = 0;
+      } else {
+        var kvRate = kvTyp === 'ermaessigt' ? 0.07 : 0.073;
+        kv = Math.round(kvBase * (kvRate + zb / 200) * 100) / 100;
+        pv = Math.round(kvBase * pv_r * 100) / 100;
+      }
+
+      if (rvTyp === 'keine') {
+        rv = 0;
+        av = 0;
+      } else {
+        rv = Math.round(rvBase * 0.093 * 100) / 100;
+        av = Math.round(rvBase * 0.013 * 100) / 100;
+      }
+      sozialM = Math.round((kv + pv + rv + av) * 100) / 100;
+
+      /* Vorsorgepauschale (annual, for tax calculation) */
+      var tb1 = rvTyp === 'keine' ? 0 : Math.min(bruttoY, p.bbgRV * 12) * 0.093;
+      var kvRateVP = kvTyp === 'ermaessigt' ? 0.07 : 0.07;
+      var tb2kv, tb2pv;
+      if (kvTyp === 'privat') {
+        tb2kv = kv * 12;
+        tb2pv = 0;
+      } else {
+        tb2kv = Math.min(bruttoY, p.bbgKV * 12) * (kvRateVP + zb / 200);
+        tb2pv = Math.min(bruttoY, p.bbgKV * 12) * pvRate(kinder, age23, false);
+      }
+      vp = Math.ceil(tb1 + tb2kv + tb2pv);
+    }
+
+    /* zu versteuerndes Einkommen (annual) */
     var zvE;
     if (klasse === 'VI') {
-      // No WK, no SA
-      zvE = bruttoY - vp;
+      zvE = bruttoY + hinzuY - vp;
     } else {
-      zvE = bruttoY - p.wk - p.sa - vp;
+      zvE = bruttoY + hinzuY - freibetragY - p.wk - p.sa - vp;
       if (klasse === 'II') {
         zvE -= p.entl;
       }
     }
     zvE = Math.max(0, zvE);
 
-    /* ─── Einkommensteuer (annual) ─── */
+    /* Einkommensteuer (annual) - PAP BMF 2026 */
     var estY;
     if (klasse === 'III') {
-      // Splittingtarif
       estY = 2 * grundtarif(Math.floor(zvE / 2), year);
     } else if (klasse === 'V' || klasse === 'VI') {
-      // No Grundfreibetrag benefit
-      estY = grundtarif(zvE + p.gf, year);
+      estY = mst5_6(zvE, year);
     } else {
-      // Grundtarif (I, II, IV)
       estY = grundtarif(zvE, year);
     }
+
+    if (klasseRaw === 'IV_F' && faktor > 0) {
+      estY = Math.floor(estY * faktor);
+    }
+
     var estM = Math.round(estY / 12 * 100) / 100;
 
-    /* ─── Solidaritatszuschlag ─── */
+    /* Solidaritatszuschlag - Kinderfreibetrag reduces basis for Soli */
     var soliFG = klasse === 'III' ? p.sfg3 : p.sfg;
+    var estForSoli = estY;
+    if (kinderFB > 0) {
+      var kfbAmount = kinderFB * p.kfb;
+      var zvEforSoli = Math.max(0, zvE - kfbAmount);
+      if (klasse === 'III') {
+        estForSoli = 2 * grundtarif(Math.floor(zvEforSoli / 2), year);
+      } else if (klasse === 'V' || klasse === 'VI') {
+        estForSoli = mst5_6(zvEforSoli, year);
+      } else {
+        estForSoli = grundtarif(zvEforSoli, year);
+      }
+      if (klasseRaw === 'IV_F' && faktor > 0) {
+        estForSoli = Math.floor(estForSoli * faktor);
+      }
+    }
     var soliY = 0;
-    if (estY > soliFG) {
-      soliY = Math.min(0.055 * estY, 0.119 * (estY - soliFG));
+    if (estForSoli > soliFG) {
+      soliY = Math.min(0.055 * estForSoli, 0.119 * (estForSoli - soliFG));
       soliY = Math.floor(soliY * 100) / 100;
     }
     var soliM = Math.round(soliY / 12 * 100) / 100;
 
-    /* ─── Kirchensteuer ─── */
+    /* Kirchensteuer - also uses Kinderfreibetrag-reduced basis */
     var kircheRate = 0;
     if (kirche) {
       kircheRate = (bl === 'BW' || bl === 'BY') ? 0.08 : 0.09;
     }
-    var kircheY = Math.floor(estY * kircheRate * 100) / 100;
+    var kircheY = Math.floor(estForSoli * kircheRate * 100) / 100;
     var kircheM = Math.round(kircheY / 12 * 100) / 100;
 
-    /* ─── Totals ─── */
+    /* Totals */
     var steuerM = Math.round((estM + soliM + kircheM) * 100) / 100;
-    var totalAbzug = Math.round((sozialM + steuerM) * 100) / 100;
+    var zusA1 = isA1 ? parseNum(document.getElementById('zusA1Kwota').value) : 0;
+    var totalAbzug = Math.round((sozialM + steuerM + zusA1) * 100) / 100;
     var nettoM = Math.round((bruttoM - totalAbzug) * 100) / 100;
 
-    /* ─── Display multiplier (monthly vs annual) ─── */
+    /* Display multiplier (monthly vs annual) */
     var m = period === 'yearly' ? 12 : 1;
-    var periodLabel = period === 'yearly' ? 'rocznie' : 'miesiecznie';
+    var periodLabel = period === 'yearly' ? 'rocznie' : 'miesięcznie';
 
-    // Hide placeholder, show results
     document.getElementById('resultPlaceholder').style.display = 'none';
     var rc = document.getElementById('resultContent');
     rc.classList.add('active');
 
-    // Update values
     document.getElementById('resBruttoLabel').textContent = 'Brutto ' + periodLabel;
     document.getElementById('resBrutto').textContent = fmt(bruttoM * m) + ' EUR';
-    document.getElementById('resKV').textContent = fmtDed(kv * m);
-    document.getElementById('resPV').textContent = fmtDed(pv * m);
-    document.getElementById('resRV').textContent = fmtDed(rv * m);
-    document.getElementById('resAV').textContent = fmtDed(av * m);
-    document.getElementById('resSozial').textContent = fmtDed(sozialM * m);
+    /* Show/hide social contributions vs ZUS row for A1 */
+    document.getElementById('sozialWrap').style.display = isA1 ? 'none' : '';
+    document.getElementById('zusA1Row').style.display = (isA1 && zusA1 > 0) ? 'flex' : 'none';
+    if (isA1 && zusA1 > 0) {
+      document.getElementById('resZusA1').textContent = fmtDed(zusA1 * m);
+    }
+    if (!isA1) {
+      document.getElementById('resKV').textContent = fmtDed(kv * m);
+      document.getElementById('resPV').textContent = fmtDed(pv * m);
+      document.getElementById('resRV').textContent = fmtDed(rv * m);
+      document.getElementById('resAV').textContent = fmtDed(av * m);
+      document.getElementById('resSozial').textContent = fmtDed(sozialM * m);
+    }
     document.getElementById('resESt').textContent = fmtDed(estM * m);
     var soliRow = document.getElementById('resSoli').parentElement;
     document.getElementById('resSoli').textContent = fmtDed(soliM * m);
@@ -1166,86 +1441,143 @@ e-mail: olsztyn@all-tax.pl</p></div>
     document.getElementById('resKircheRow').style.display = kirche ? 'flex' : 'none';
     document.getElementById('resSteuer').textContent = fmtDed(steuerM * m);
     document.getElementById('resAbzug').textContent = fmtDed(totalAbzug * m);
-    setNettoAnimated(nettoM * m);
+    document.getElementById('resNetto').textContent = fmt(nettoM * m) + ' EUR';
     document.getElementById('resultTitle').textContent = 'Wynik - ' + periodLabel;
 
-    // Chart
+    /* Chart */
     var pctNetto = bruttoM > 0 ? Math.max(0, nettoM / bruttoM * 100) : 0;
-    var pctSozial = bruttoM > 0 ? Math.max(0, sozialM / bruttoM * 100) : 0;
+    var chartSozial = isA1 ? zusA1 : sozialM;
+    var pctSozial = bruttoM > 0 ? Math.max(0, chartSozial / bruttoM * 100) : 0;
     var pctSteuer = bruttoM > 0 ? Math.max(0, steuerM / bruttoM * 100) : 0;
 
     document.getElementById('barNetto').style.width = pctNetto + '%';
     document.getElementById('barSozial').style.width = pctSozial + '%';
     document.getElementById('barSteuer').style.width = pctSteuer + '%';
-    var _rSoz = Math.round(pctSozial), _rSt = Math.round(pctSteuer);
-    document.getElementById('legNetto').textContent = (bruttoM > 0 ? Math.max(0, 100 - _rSoz - _rSt) : 0) + '%';
-    document.getElementById('legSozial').textContent = _rSoz + '%';
-    document.getElementById('legSteuer').textContent = _rSt + '%';
+    document.getElementById('legNetto').textContent = Math.round(pctNetto) + '%';
+    document.getElementById('legSozial').textContent = Math.round(pctSozial) + '%';
+    document.getElementById('legSteuer').textContent = Math.round(pctSteuer) + '%';
 
-    // Scroll to results on mobile
     if (scrollToResult && window.innerWidth <= 900) {
       document.getElementById('resultsCard').scrollIntoView({behavior: 'smooth', block: 'start'});
     }
   };
 
-  /* ─── Auto-calculate on input change ─── */
-  var _nettoPrev = 0;
-  function setNettoAnimated(target){
-    var el = document.getElementById('resNetto');
-    if (!el) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      el.textContent = fmt(target) + ' EUR'; _nettoPrev = target; return;
-    }
-    var start = _nettoPrev, t0 = null, dur = 360;
-    function step(ts){
-      if (!t0) t0 = ts;
-      var p = Math.min(1, (ts - t0) / dur);
-      var e = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(start + (target - start) * e) + ' EUR';
-      if (p < 1) requestAnimationFrame(step);
-      else { el.textContent = fmt(target) + ' EUR'; _nettoPrev = target; }
-    }
-    requestAnimationFrame(step);
-  }
+  /* Auto-calculate on input change */
   var debounceTimer;
   function onInputChange() {
+    updateConditionalFields();
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(function() { calculate(false); }, 350);
   }
 
-  /* ─── Init ─── */
+  /* Init */
   document.addEventListener('DOMContentLoaded', function() {
-    // Bind input events
-    var inputs = document.querySelectorAll('.form-input, .form-select, input[type="radio"], input[type="checkbox"]');
+    var inputs = document.querySelectorAll('.atx-opt input, .atx-opt select, .form-select, .form-input, .atx-brutto-input, input[type="radio"], input[type="checkbox"]');
     inputs.forEach(function(el) {
       el.addEventListener('input', onInputChange);
       el.addEventListener('change', onInputChange);
     });
 
-    // Suwak brutto <-> pole brutto
-    var range = document.getElementById('bruttoRange');
-    var bf = document.getElementById('brutto');
-    function updateFill(){
-      if(!range) return;
-      var pct = (range.value - range.min) / (range.max - range.min) * 100;
-      range.style.background = 'linear-gradient(90deg,var(--atx-red) 0%,var(--atx-red) '+pct+'%,var(--atx-soft) '+pct+'%,var(--atx-soft) 100%)';
-    }
-    if (range && bf){
-      range.addEventListener('input', function(){ bf.value = range.value; updateFill(); onInputChange(); });
-      bf.addEventListener('input', function(){ var v = parseFloat((bf.value||'').replace(',','.')); if(!isNaN(v)){ range.value = Math.min(range.max, Math.max(range.min, v)); updateFill(); } });
-      updateFill();
-    }
-    // Auto-calc dla wartosci poczatkowej
-    calculate(false);
-
-    // Update brutto label when period changes
     document.querySelectorAll('input[name="period"]').forEach(function(el) {
       el.addEventListener('change', function() {
         var label = document.getElementById('bruttoLabel');
         label.textContent = el.value === 'yearly' ? 'Roczne wynagrodzenie brutto (EUR)' : 'Wynagrodzenie brutto (EUR)';
       });
     });
+
+    updateConditionalFields();
   });
+
+  /* Print professional result */
+  window.printResult = function() {
+    var existing = document.getElementById('printOverlay');
+    if (existing) existing.remove();
+
+    var period = document.querySelector('input[name="period"]:checked').value;
+    var periodLabel = period === 'yearly' ? 'rocznie' : 'miesięcznie';
+    var year = document.querySelector('input[name="year"]:checked').value;
+    var klasse = document.getElementById('klasse').value;
+    var klasseLabel = klasse === 'IV_F' ? 'IV z Faktor' : klasse;
+    var bl = document.getElementById('bundesland');
+    var blLabel = bl.options[bl.selectedIndex].text;
+    var svSystem = document.getElementById('svSystem').value;
+    var svLabel = svSystem === 'PL_A1' ? 'Polska (A1 - delegowanie)' : 'Niemcy';
+    var kirche = document.getElementById('kirchensteuer').checked;
+
+    var brutto = document.getElementById('resBrutto').textContent;
+    var resKV = document.getElementById('resKV').textContent;
+    var resPV = document.getElementById('resPV').textContent;
+    var resRV = document.getElementById('resRV').textContent;
+    var resAV = document.getElementById('resAV').textContent;
+    var resSozial = document.getElementById('resSozial').textContent;
+    var resESt = document.getElementById('resESt').textContent;
+    var resSoli = document.getElementById('resSoli').textContent;
+    var resKirche = document.getElementById('resKirche').textContent;
+    var resSteuer = document.getElementById('resSteuer').textContent;
+    var resAbzug = document.getElementById('resAbzug').textContent;
+    var resNetto = document.getElementById('resNetto').textContent;
+    var labelKV = document.getElementById('labelKV').textContent;
+    var labelPV = document.getElementById('labelPV').textContent;
+    var labelRV = document.getElementById('labelRV').textContent;
+    var labelAV = document.getElementById('labelAV').textContent;
+
+    var today = new Date();
+    var dateStr = today.toLocaleDateString('pl-PL', {day: '2-digit', month: '2-digit', year: 'numeric'});
+    var isA1Print = svSystem === 'PL_A1';
+    var kircheRow = kirche ? '<tr><td>Podatek kościelny</td><td class="val">' + resKirche + '</td></tr>' : '';
+    var resZusA1 = isA1Print ? document.getElementById('resZusA1').textContent : '';
+    var zusA1PrintVal = isA1Print ? parseNum(document.getElementById('zusA1Kwota').value) : 0;
+
+    var sozialSection = '';
+    if (isA1Print) {
+      if (zusA1PrintVal > 0) {
+        sozialSection = '<div class="p-section">Składka ZUS</div>'
+          + '<table><tr><td>Składka ZUS (pracownik)</td><td class="val">' + resZusA1 + '</td></tr></table>';
+      }
+    } else {
+      sozialSection = '<div class="p-section">Składki społeczne</div>'
+        + '<table><tr><td>' + labelKV + '</td><td class="val">' + resKV + '</td></tr>'
+        + '<tr><td>' + labelPV + '</td><td class="val">' + resPV + '</td></tr>'
+        + '<tr><td>' + labelRV + '</td><td class="val">' + resRV + '</td></tr>'
+        + '<tr><td>' + labelAV + '</td><td class="val">' + resAV + '</td></tr>'
+        + '<tr class="p-subtotal"><td>Razem składki</td><td class="val">' + resSozial + '</td></tr></table>';
+    }
+
+    var html = '<div id="printOverlay">'
+      + '<div class="p-header"><div><h1>Kalkulacja wynagrodzenia netto</h1><p>Kalkulator brutto-netto Niemcy ' + year + '</p></div>'
+      + '<div class="p-header-right"><img src="/image/fenix-tax-logo.svg" alt="FenixTax" style="height:36px;margin-bottom:6px;display:block;margin-left:auto"><br>Data: ' + dateStr + '</div></div>'
+      + '<div class="p-params">'
+      + '<div class="p-param"><span>Rok podatkowy</span><span>' + year + '</span></div>'
+      + '<div class="p-param"><span>Klasa podatkowa</span><span>' + klasseLabel + '</span></div>'
+      + '<div class="p-param"><span>Bundesland</span><span>' + blLabel + '</span></div>'
+      + '<div class="p-param"><span>Ubezpieczenie</span><span>' + svLabel + '</span></div>'
+      + '<div class="p-param"><span>Podatek kościelny</span><span>' + (kirche ? 'Tak' : 'Nie') + '</span></div>'
+      + '<div class="p-param"><span>Okres</span><span>' + periodLabel + '</span></div>'
+      + '</div>'
+      + '<table><tr><th>Pozycja</th><th style="text-align:right">Kwota</th></tr>'
+      + '<tr><td><strong>Wynagrodzenie brutto</strong></td><td class="val"><strong>' + brutto + '</strong></td></tr></table>'
+      + sozialSection
+      + '<div class="p-section">Podatki</div>'
+      + '<table><tr><td>Podatek dochodowy (Lohnsteuer)</td><td class="val">' + resESt + '</td></tr>'
+      + '<tr><td>Solidaritatszuschlag</td><td class="val">' + resSoli + '</td></tr>'
+      + kircheRow
+      + '<tr class="p-subtotal"><td>Razem podatki</td><td class="val">' + resSteuer + '</td></tr></table>'
+      + '<table><tr class="p-total"><td>RAZEM POTRĄCENIA</td><td class="val">' + resAbzug + '</td></tr>'
+      + '<tr class="p-netto"><td>WYNAGRODZENIE NETTO</td><td class="val">' + resNetto + '</td></tr></table>'
+      + '<div class="p-footer">Wygenerowano na FenixTax.pl - Kalkulator brutto-netto Niemcy | ' + dateStr + ' | Obliczenie orientacyjne, nie stanowi porady podatkowej.</div>'
+      + '</div>';
+
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.body.classList.add('kbn-printing');
+
+    function cleanup() {
+      document.body.classList.remove('kbn-printing');
+      var el = document.getElementById('printOverlay');
+      if (el) el.remove();
+    }
+    window.addEventListener('afterprint', cleanup, {once: true});
+    setTimeout(function() { window.print(); }, 50);
+  };
 
 })();
 </script>
@@ -1258,22 +1590,17 @@ e-mail: olsztyn@all-tax.pl</p></div>
     mirror('resBrutto','resBruttoTile');
     mirror('legNetto','legNetto2');
     mirror('legNetto','legNetto3');
-    // Progressive disclosure: dzieci -> liczba; wiek 23+ tylko dla bezdzietnych
-    var hasKids=document.getElementById('hasKids'), kidsWrap=document.getElementById('kidsCountWrap'),
-        kinder=document.getElementById('kinder'), ageWrap=document.getElementById('ageWrap');
-    function syncKids(){
-      if(hasKids.checked){
-        kidsWrap.hidden=false;
-        if(kinder.value==='0') kinder.value='1';
-        ageWrap.style.display='none';
-      } else {
-        kidsWrap.hidden=true;
-        kinder.value='0';
-        ageWrap.style.display='';
-      }
-      if(window.calculate) window.calculate(false);
+    // Suwak brutto <-> pole brutto (silnik fenix nie ma suwaka)
+    var range=document.getElementById('bruttoRange'), bf=document.getElementById('brutto');
+    function updateFill(){ if(!range) return; var pct=(range.value-range.min)/(range.max-range.min)*100;
+      range.style.background='linear-gradient(90deg,var(--atx-red) 0%,var(--atx-red) '+pct+'%,var(--atx-soft) '+pct+'%,var(--atx-soft) 100%)'; }
+    if(range&&bf){
+      range.addEventListener('input',function(){ bf.value=range.value; updateFill(); bf.dispatchEvent(new Event('input',{bubbles:true})); });
+      bf.addEventListener('input',function(){ var v=parseFloat((bf.value||'').replace(',','.')); if(!isNaN(v)){ range.value=Math.min(range.max,Math.max(range.min,v)); updateFill(); } });
+      updateFill();
     }
-    if(hasKids){ hasKids.addEventListener('change', syncKids); syncKids(); }
+    // Auto-przeliczenie dla wartosci poczatkowej (silnik pokazuje placeholder dopoki nie zmienisz pola)
+    if(window.calculate) window.calculate(false);
     // Domyslny Zusatzbeitrag zalezny od roku (2,5% 2025 / 2,9% 2026), o ile uzytkownik nie nadpisal
     var zb = document.getElementById('zusatzbeitrag');
     var defaults = {'2025':'2,5','2026':'2,9'};
